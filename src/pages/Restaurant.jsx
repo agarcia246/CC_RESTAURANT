@@ -11,7 +11,7 @@ export default function Restaurant() {
 	const MEAL_PROXY_URL = 'https://registermeal.azurewebsites.net/api/ProxyRegisterMeal';
 	const [form, setForm] = React.useState({
 		name: '',
-		restaurant:'',
+		restaurant: RESTAURANTS[0],
 		description: '',
 		prepTimeMinutes: '',
 		price: '',
