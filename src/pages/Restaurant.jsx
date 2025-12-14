@@ -61,7 +61,7 @@ export default function Restaurant() {
 			}
 	
 			const data = await res.json().catch(() => ({}));
-			setMessage(`Meal "${name}" registered for ${area}.`);
+			setMessage(`Meal "${name}" registered for ${restaurant}.`);
 			setForm({
 				name: '',
 				restaurant: '',
