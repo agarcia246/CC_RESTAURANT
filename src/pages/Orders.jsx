@@ -31,7 +31,7 @@ export default function Orders() {
 				const normalized = (Array.isArray(list) ? list : []).map((e) => {
 					const parsedSubtotal = Number(e.subtotal);
 					const safeSubtotal = Number.isFinite(parsedSubtotal) ? parsedSubtotal : 0;
-					const parsedEstimated = Number(e.estimatedMinutes);
+					const parsedEstimated = Number(e.estimatedMinutes[0]);
 					const safeEstimated = Number.isFinite(parsedEstimated) ? parsedEstimated : 0;
 					return {
 						id: e.RowKey || e.orderId || crypto.randomUUID(),
