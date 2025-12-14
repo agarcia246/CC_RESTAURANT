@@ -25,7 +25,7 @@ export default function Customer() {
 				const list = await res.json();
 				// Normalize entities from Table Storage with robust numeric parsing and fallbacks
 				const normalized = (Array.isArray(list) ? list : []).map((e) => {
-					const rawPrep = e.prepTimeMinutes ?? e.time;
+					const rawPrep = e.prepTimeMinutes[0] ?? e.time[0];
 					const parsedPrep = Number(rawPrep);
 					const safePrepTime = Number.isFinite(parsedPrep) ? parsedPrep : 15; // fallback
 
