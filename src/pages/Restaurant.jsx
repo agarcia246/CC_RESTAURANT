@@ -128,16 +128,6 @@ export default function Restaurant() {
 				</div>
 
 				<label className="form-field">
-					<span>Delivery area</span>
-					<select value={form.area} onChange={(e) => updateField('area', e.target.value)}>
-						{DELIVERY_AREAS.map((a) => (
-							<option key={a} value={a}>{a}</option>
-						))}
-					</select>
-				</label>
-
-
-				<label className="form-field">
 					<span>Restaurant</span>
 					<select value={form.area} onChange={(e) => updateField('restaurant', e.target.value)}>
 						{RESTAURANTS.map((b) => (
