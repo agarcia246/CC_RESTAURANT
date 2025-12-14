@@ -1,5 +1,5 @@
 import React from 'react';
-import { DELIVERY_AREAS, FIXED_DELIVERY_MINUTES, FIXED_PICKUP_MINUTES, CURRENCY } from '../constants.js';
+import { DELIVERY_AREAS, FIXED_DELIVERY_MINUTES, FIXED_PICKUP_MINUTES, CURRENCY, RESTAURANTS } from '../constants.js';
 import { saveLastOrder } from '../storage.js';
 
 function formatMoney(n) {
@@ -7,8 +7,8 @@ function formatMoney(n) {
 }
 
 export default function Customer() {
-	const [area, setArea] = React.useState(DELIVERY_AREAS[0]);
-	const [address, setAddress] = React.useState('');
+	const [area, setArea] = React.useState(RESTAURANTS[0]);
+	const [address, setAddress] = React.useState(DELIVERY_AREAS[0]);
 	const [meals, setMeals] = React.useState([]);
 	const [cart, setCart] = React.useState({});
 
@@ -158,21 +158,24 @@ export default function Customer() {
 				<div>
 					<div className="form">
 						<label className="form-field">
-							<span>Delivery area</span>
+							<span>Restaurant Name</span>
 							<select value={area} onChange={(e) => setArea(e.target.value)}>
-								{DELIVERY_AREAS.map((a) => (
+								{RESTAURANTS.map((a) => (
 									<option key={a} value={a}>{a}</option>
 								))}
 							</select>
 						</label>
+
+
+
+
 						<label className="form-field">
 							<span>Delivery address</span>
-							<input
-								type="text"
-								value={address}
-								onChange={(e) => setAddress(e.target.value)}
-								placeholder="e.g., 123 Main St, Apt 4B"
-							/>
+							<select value={address} onChange={(e) => setAddress(e.target.value)}>
+								{DELIVERY_AREAS.map((a) => (
+									<option key={a} value={a}>{a}</option>
+								))}
+							</select>
 						</label>
 					</div>
 

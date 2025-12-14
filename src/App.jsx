@@ -38,9 +38,6 @@ export default function App() {
 				</nav>
 			</header>
 			<main className="app-main">{page}</main>
-			<footer className="app-footer">
-				<small>Educational demo — no authentication or real payments</small>
-			</footer>
 		</div>
 	);
 }

@@ -11,7 +11,7 @@ export default function Restaurant() {
 	const MEAL_PROXY_URL = 'https://registermeal.azurewebsites.net/api/ProxyRegisterMeal';
 	const [form, setForm] = React.useState({
 		name: '',
-		restaurant: RESTAURANTS[0],
+		restaurant:RESTAURANTS[0],
 		description: '',
 		prepTimeMinutes: '',
 		price: '',
@@ -34,10 +34,6 @@ export default function Restaurant() {
 		const price = Number(form.price);
 		const area = form.area;
 	
-		if (!name || !description || !area || !Number.isFinite(prepTimeMinutes) || !Number.isFinite(price)) {
-			setMessage('Please complete all fields with valid values.');
-			return;
-		}
 		if (prepTimeMinutes <= 0 || price <= 0) {
 			setMessage('Preparation time and price must be greater than 0.');
 			return;
@@ -143,7 +139,7 @@ export default function Restaurant() {
 
 				<label className="form-field">
 					<span>Restaurant</span>
-					<select value={form.restaurant} onChange={(e) => updateField('restaurant', e.target.value)}>
+					<select value={form.area} onChange={(e) => updateField('restaurant', e.target.value)}>
 						{RESTAURANTS.map((b) => (
 							<option key={b} value={b}>{b}</option>
 						))}

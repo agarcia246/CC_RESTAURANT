@@ -1,5 +1,5 @@
 import React from 'react';
-import { DELIVERY_AREAS, CURRENCY } from '../constants.js';
+import { DELIVERY_AREAS, CURRENCY, RESTAURANTS } from '../constants.js';
 
 function formatMoney(n) {
 	return `${CURRENCY} ${n.toFixed(2)}`;
@@ -9,7 +9,7 @@ export default function Orders() {
 	// Configure your Orders query function URL here. It should accept ?delivery_area=...
 	// Example: 'https://<your-func>.azurewebsites.net/api/QueryOrders?code=KEY'
 	const ORDERS_QUERY_URL = 'https://registermeal.azurewebsites.net/api/QueryOrderTable';
-	const [area, setArea] = React.useState(DELIVERY_AREAS[0]);
+	const [area, setArea] = React.useState(RESTAURANTS[0]);
 	const [orders, setOrders] = React.useState([]);
 	const [loading, setLoading] = React.useState(false);
 	const [error, setError] = React.useState('');
@@ -28,16 +28,22 @@ export default function Orders() {
 				const res = await fetch(`${ORDERS_QUERY_URL}${ORDERS_QUERY_URL.includes('?') ? '&' : '?'}delivery_area=${encodeURIComponent(area)}`);
 				if (!res.ok) throw new Error(await res.text().catch(() => `HTTP ${res.status}`));
 				const list = await res.json();
-				const normalized = (Array.isArray(list) ? list : []).map((e) => ({
-					id: e.RowKey || e.orderId || crypto.randomUUID(),
-					createdAt: e.createdAt,
-					address: e.address,
-					subtotal: Number(e.subtotal ?? 0),
-					estimatedMinutes: Number(e.estimatedMinutes ?? 0),
-					items: (() => {
-						try { return JSON.parse(e.itemsJson || '[]'); } catch { return []; }
-					})()
-				}));
+				const normalized = (Array.isArray(list) ? list : []).map((e) => {
+					const parsedSubtotal = Number(e.subtotal);
+					const safeSubtotal = Number.isFinite(parsedSubtotal) ? parsedSubtotal : 0;
+					const parsedEstimated = Number(e.estimatedMinutes);
+					const safeEstimated = Number.isFinite(parsedEstimated) ? parsedEstimated : 0;
+					return {
+						id: e.RowKey || e.orderId || crypto.randomUUID(),
+						createdAt: e.createdAt,
+						address: e.address,
+						subtotal: safeSubtotal,
+						estimatedMinutes: safeEstimated,
+						items: (() => {
+							try { return JSON.parse(e.itemsJson || '[]'); } catch { return []; }
+						})()
+					};
+				});
 				if (!cancelled) setOrders(normalized);
 			} catch (err) {
 				if (!cancelled) setError(String(err.message || err));
@@ -54,9 +60,9 @@ export default function Orders() {
 			<h2>Restaurant — Active Orders</h2>
 			<div className="form">
 				<label className="form-field">
-					<span>Filter by delivery area</span>
+					<span>Filter by restaurants</span>
 					<select value={area} onChange={(e) => setArea(e.target.value)}>
-						{DELIVERY_AREAS.map((a) => (
+						{RESTAURANTS.map((a) => (
 							<option key={a} value={a}>{a}</option>
 						))}
 					</select>
