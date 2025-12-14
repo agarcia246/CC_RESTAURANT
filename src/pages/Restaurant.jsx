@@ -1,6 +1,5 @@
 import React from 'react';
-import { DELIVERY_AREAS } from '../constants.js';
-import { addMeal } from '../storage.js';
+import { DELIVERY_AREAS, RESTAURANTS } from '../constants.js';
 
 
 
@@ -12,6 +11,7 @@ export default function Restaurant() {
 	const MEAL_PROXY_URL = 'https://registermeal.azurewebsites.net/api/ProxyRegisterMeal';
 	const [form, setForm] = React.useState({
 		name: '',
+		restaurant:'',
 		description: '',
 		prepTimeMinutes: '',
 		price: '',
@@ -28,6 +28,7 @@ export default function Restaurant() {
 	async function onSubmit(e) {
 		e.preventDefault();
 		const name = form.name.trim();
+		const restaurant = form.restaurant;
 		const description = form.description.trim();
 		const prepTimeMinutes = Number(form.prepTimeMinutes);
 		const price = Number(form.price);
@@ -50,10 +51,11 @@ export default function Restaurant() {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					name,
+					restaurant,
 					description,
 					price,
 					prepTimeMinutes,
-					delivery_area: area
+					delivery_area: area,
 				})
 			});
 	
@@ -66,6 +68,7 @@ export default function Restaurant() {
 			setMessage(`Meal "${name}" registered for ${area}.`);
 			setForm({
 				name: '',
+				restaurant: '',
 				description: '',
 				prepTimeMinutes: '',
 				price: '',
@@ -136,6 +139,19 @@ export default function Restaurant() {
 						))}
 					</select>
 				</label>
+
+
+				<label className="form-field">
+					<span>Restaurant</span>
+					<select value={form.restaurant} onChange={(e) => updateField('restaurant', e.target.value)}>
+						{RESTAURANTS.map((b) => (
+							<option key={b} value={b}>{b}</option>
+						))}
+					</select>
+				</label>
+
+
+
 
 				<div className="actions">
 					<button type="submit" className="button primary">Register Meal</button>
